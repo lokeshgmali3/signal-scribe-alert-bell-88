@@ -50,49 +50,71 @@ export const useSignalTracker = () => {
 
 
   const handleRingOff = async () => {
+    console.log('🔴 Ring Off button clicked - Starting function');
+    
     try {
+      console.log('🔴 Checking Capacitor availability...');
+      console.log('🔴 Window.Capacitor exists:', !!(window as any).Capacitor);
+      console.log('🔴 Is native platform:', (window as any).Capacitor?.isNativePlatform?.());
+      console.log('🔴 Platform:', (window as any).Capacitor?.getPlatform?.());
+      
       if ((window as any).Capacitor && (window as any).Capacitor.isNativePlatform()) {
         if ((window as any).Capacitor.getPlatform() === 'android') {
-          // Use App plugin to send custom event that can trigger broadcast intent
-          const { App } = (window as any).Capacitor.Plugins;
-          if (App && App.addListener) {
-            // Send custom event that native side can listen to
-            await App.removeAllListeners();
-            console.log('Ring Off: Sending custom event for Tasker integration');
-            // Create a custom URL scheme event that can be caught by Tasker
-            window.location.href = 'tasker://ringoff';
-          }
+          console.log('🔴 Android platform detected - attempting to send URL scheme');
+          console.log('🔴 URL scheme being sent: tasker://ringoff');
+          
+          // Try URL scheme approach for Tasker
+          window.location.href = 'tasker://ringoff';
+          console.log('🔴 URL scheme sent successfully');
+          
+          // Also log the broadcast intent name for Tasker configuration
+          console.log('🔴 Alternative: Configure Tasker to listen for broadcast intent: com.tasker.RING_OFF');
+        } else {
+          console.log('🔴 Not Android platform');
         }
       } else {
-        console.log('Ring Off: Web environment - would send broadcast intent com.tasker.RING_OFF');
+        console.log('🔴 Web environment - Not on mobile device');
+        console.log('🔴 For Tasker: Use broadcast intent com.tasker.RING_OFF');
       }
     } catch (error) {
-      console.error('Error sending Ring Off event:', error);
-      console.log('Ring Off: Fallback - would trigger Tasker automation');
+      console.error('🔴 Error in Ring Off handler:', error);
     }
+    
+    console.log('🔴 Ring Off function completed');
   };
 
   const handleScreenOff = async () => {
+    console.log('📱 Screen Off button clicked - Starting function');
+    
     try {
+      console.log('📱 Checking Capacitor availability...');
+      console.log('📱 Window.Capacitor exists:', !!(window as any).Capacitor);
+      console.log('📱 Is native platform:', (window as any).Capacitor?.isNativePlatform?.());
+      console.log('📱 Platform:', (window as any).Capacitor?.getPlatform?.());
+      
       if ((window as any).Capacitor && (window as any).Capacitor.isNativePlatform()) {
         if ((window as any).Capacitor.getPlatform() === 'android') {
-          // Use App plugin to send custom event that can trigger broadcast intent
-          const { App } = (window as any).Capacitor.Plugins;
-          if (App && App.addListener) {
-            // Send custom event that native side can listen to
-            await App.removeAllListeners();
-            console.log('Screen Off: Sending custom event for Tasker integration');
-            // Create a custom URL scheme event that can be caught by Tasker
-            window.location.href = 'tasker://screenoff';
-          }
+          console.log('📱 Android platform detected - attempting to send URL scheme');
+          console.log('📱 URL scheme being sent: tasker://screenoff');
+          
+          // Try URL scheme approach for Tasker
+          window.location.href = 'tasker://screenoff';
+          console.log('📱 URL scheme sent successfully');
+          
+          // Also log the broadcast intent name for Tasker configuration
+          console.log('📱 Alternative: Configure Tasker to listen for broadcast intent: com.tasker.SCREEN_OFF');
+        } else {
+          console.log('📱 Not Android platform');
         }
       } else {
-        console.log('Screen Off: Web environment - would send broadcast intent com.tasker.SCREEN_OFF');
+        console.log('📱 Web environment - Not on mobile device');
+        console.log('📱 For Tasker: Use broadcast intent com.tasker.SCREEN_OFF');
       }
     } catch (error) {
-      console.error('Error sending Screen Off event:', error);
-      console.log('Screen Off: Fallback - would trigger Tasker automation');
+      console.error('📱 Error in Screen Off handler:', error);
     }
+    
+    console.log('📱 Screen Off function completed');
   };
 
   return {
