@@ -53,21 +53,22 @@ export const useSignalTracker = () => {
     try {
       if ((window as any).Capacitor && (window as any).Capacitor.isNativePlatform()) {
         if ((window as any).Capacitor.getPlatform() === 'android') {
-          // Send broadcast intent to stop all sound using Capacitor's native bridge
-          await (window as any).Capacitor.Plugins.Device.sendBroadcast?.({
-            action: 'com.tasker.RING_OFF',
-            category: 'android.intent.category.DEFAULT',
-            extras: {
-              command: 'stop_sound'
-            }
-          }) || console.log('Ring Off: Sending broadcast intent - com.tasker.RING_OFF');
+          // Use App plugin to send custom event that can trigger broadcast intent
+          const { App } = (window as any).Capacitor.Plugins;
+          if (App && App.addListener) {
+            // Send custom event that native side can listen to
+            await App.removeAllListeners();
+            console.log('Ring Off: Sending custom event for Tasker integration');
+            // Create a custom URL scheme event that can be caught by Tasker
+            window.location.href = 'tasker://ringoff';
+          }
         }
       } else {
-        console.log('Ring Off: Not running on native platform - would send broadcast intent');
+        console.log('Ring Off: Web environment - would send broadcast intent com.tasker.RING_OFF');
       }
     } catch (error) {
-      console.error('Error sending Ring Off broadcast intent:', error);
-      console.log('Ring Off: Fallback - broadcast intent would be sent to com.tasker.RING_OFF');
+      console.error('Error sending Ring Off event:', error);
+      console.log('Ring Off: Fallback - would trigger Tasker automation');
     }
   };
 
@@ -75,21 +76,22 @@ export const useSignalTracker = () => {
     try {
       if ((window as any).Capacitor && (window as any).Capacitor.isNativePlatform()) {
         if ((window as any).Capacitor.getPlatform() === 'android') {
-          // Send broadcast intent to turn off screen using Capacitor's native bridge
-          await (window as any).Capacitor.Plugins.Device.sendBroadcast?.({
-            action: 'com.tasker.SCREEN_OFF',
-            category: 'android.intent.category.DEFAULT',
-            extras: {
-              command: 'turn_off_screen'
-            }
-          }) || console.log('Screen Off: Sending broadcast intent - com.tasker.SCREEN_OFF');
+          // Use App plugin to send custom event that can trigger broadcast intent
+          const { App } = (window as any).Capacitor.Plugins;
+          if (App && App.addListener) {
+            // Send custom event that native side can listen to
+            await App.removeAllListeners();
+            console.log('Screen Off: Sending custom event for Tasker integration');
+            // Create a custom URL scheme event that can be caught by Tasker
+            window.location.href = 'tasker://screenoff';
+          }
         }
       } else {
-        console.log('Screen Off: Not running on native platform - would send broadcast intent');
+        console.log('Screen Off: Web environment - would send broadcast intent com.tasker.SCREEN_OFF');
       }
     } catch (error) {
-      console.error('Error sending Screen Off broadcast intent:', error);
-      console.log('Screen Off: Fallback - broadcast intent would be sent to com.tasker.SCREEN_OFF');
+      console.error('Error sending Screen Off event:', error);
+      console.log('Screen Off: Fallback - would trigger Tasker automation');
     }
   };
 
