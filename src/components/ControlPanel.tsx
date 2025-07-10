@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Save, FileText, PhoneOff } from 'lucide-react';
+import { Save, FileText, PhoneOff, MonitorOff } from 'lucide-react';
 
 interface ControlPanelProps {
   signalsText: string;
@@ -12,6 +12,7 @@ interface ControlPanelProps {
   onSaveTsMouseUp: (e: React.MouseEvent | React.TouchEvent) => void;
   onSaveTsMouseLeave: () => void;
   onRingOff: () => void;
+  onScreenOff: () => void;
 }
 
 const ControlPanel = ({
@@ -22,7 +23,8 @@ const ControlPanel = ({
   onSaveTsMouseDown,
   onSaveTsMouseUp,
   onSaveTsMouseLeave,
-  onRingOff
+  onRingOff,
+  onScreenOff
 }: ControlPanelProps) => {
 
   const handleSaveClick = () => {
@@ -37,7 +39,7 @@ const ControlPanel = ({
 
   return (
     <div className="bg-card p-4">
-      <div className="grid grid-cols-3 gap-4 max-w-lg mx-auto">
+      <div className="grid grid-cols-4 gap-4 max-w-2xl mx-auto">
         <Button
           onClick={onRingOff}
           variant="destructive"
@@ -59,6 +61,16 @@ const ControlPanel = ({
         >
           <Save className="h-6 w-6" />
           <span className="text-xs">Save</span>
+        </Button>
+
+        <Button
+          onClick={onScreenOff}
+          variant="secondary"
+          className="h-16 flex flex-col gap-1 transition-transform duration-200 select-none"
+          style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
+        >
+          <MonitorOff className="h-6 w-6" />
+          <span className="text-xs">Screen Off</span>
         </Button>
 
         <Button
