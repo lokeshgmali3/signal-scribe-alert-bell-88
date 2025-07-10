@@ -32,7 +32,7 @@ const ControlPanel = ({
       }
     }, 200);
   };
-  return <div className="bg-card p-4 py-[4px]">
+  return <div className="bg-card p-4 my-0 py-0">
       <div className="grid grid-cols-4 gap-4 max-w-2xl mx-auto">
         <Button onClick={onRingOff} variant="destructive" className="h-16 flex flex-col gap-1 transition-transform duration-200 select-none" style={{
         userSelect: 'none',
