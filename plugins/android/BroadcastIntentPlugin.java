@@ -27,7 +27,9 @@ public class BroadcastIntentPlugin extends Plugin {
             
             // Add extras if provided
             if (extras != null) {
-                for (String key : extras.keys()) {
+                java.util.Iterator<String> keys = extras.keys();
+                while (keys.hasNext()) {
+                    String key = keys.next();
                     String value = extras.getString(key);
                     if (value != null) {
                         intent.putExtra(key, value);

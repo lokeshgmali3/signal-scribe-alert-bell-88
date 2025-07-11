@@ -8,8 +8,6 @@ public class MainActivity extends BridgeActivity {
         super.onCreate(savedInstanceState);
         
         // Register the custom BroadcastIntent plugin
-        this.init(savedInstanceState, java.util.Arrays.asList(
-            BroadcastIntentPlugin.class
-        ));
+        registerPlugin(BroadcastIntentPlugin.class);
     }
 }
