@@ -34,9 +34,6 @@ const config: CapacitorConfig = {
       permissions: {
         external: 'read-write'
       }
-    },
-    BroadcastIntent: {
-      enabled: true
     }
   },
 };
