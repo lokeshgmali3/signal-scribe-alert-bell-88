@@ -2,6 +2,7 @@
 import { useSignalState } from './useSignalState';
 import { useAntidelayManager } from './useAntidelayManager';
 import { useSaveTsManager } from './useSaveTsManager';
+import BroadcastIntent from '../plugins/broadcast-intent';
 
 export const useSignalTracker = () => {
   const {
@@ -60,15 +61,34 @@ export const useSignalTracker = () => {
       
       if ((window as any).Capacitor && (window as any).Capacitor.isNativePlatform()) {
         if ((window as any).Capacitor.getPlatform() === 'android') {
-          console.log('🔴 Android platform detected - attempting to send URL scheme');
-          console.log('🔴 URL scheme being sent: tasker://ringoff');
+          console.log('🔴 Android platform detected - attempting to send broadcast intent');
           
-          // Try URL scheme approach for Tasker
-          window.location.href = 'tasker://ringoff';
-          console.log('🔴 URL scheme sent successfully');
-          
-          // Also log the broadcast intent name for Tasker configuration
-          console.log('🔴 Alternative: Configure Tasker to listen for broadcast intent: com.tasker.RING_OFF');
+          try {
+            // Send broadcast intent for Tasker using custom Capacitor plugin
+            const intentAction = 'com.tasker.RING_OFF';
+            console.log('🔴 Sending broadcast intent:', intentAction);
+            
+            const result = await BroadcastIntent.sendBroadcast({
+              action: intentAction,
+              extras: {
+                'source': 'signal_scribe',
+                'action_type': 'ring_off'
+              }
+            });
+            
+            if (result.success) {
+              console.log('🔴 Broadcast intent sent successfully:', intentAction);
+            } else {
+              throw new Error('Failed to send broadcast intent');
+            }
+          } catch (broadcastError) {
+            console.error('🔴 Error sending broadcast intent:', broadcastError);
+            
+            // Fallback to URL scheme
+            console.log('🔴 Fallback: Attempting URL scheme approach');
+            window.location.href = 'tasker://ringoff';
+            console.log('🔴 URL scheme sent as fallback');
+          }
         } else {
           console.log('🔴 Not Android platform');
         }
@@ -94,15 +114,34 @@ export const useSignalTracker = () => {
       
       if ((window as any).Capacitor && (window as any).Capacitor.isNativePlatform()) {
         if ((window as any).Capacitor.getPlatform() === 'android') {
-          console.log('📱 Android platform detected - attempting to send URL scheme');
-          console.log('📱 URL scheme being sent: tasker://screenoff');
+          console.log('📱 Android platform detected - attempting to send broadcast intent');
           
-          // Try URL scheme approach for Tasker
-          window.location.href = 'tasker://screenoff';
-          console.log('📱 URL scheme sent successfully');
-          
-          // Also log the broadcast intent name for Tasker configuration
-          console.log('📱 Alternative: Configure Tasker to listen for broadcast intent: com.tasker.SCREEN_OFF');
+          try {
+            // Send broadcast intent for Tasker using custom Capacitor plugin
+            const intentAction = 'com.tasker.SCREEN_OFF';
+            console.log('📱 Sending broadcast intent:', intentAction);
+            
+            const result = await BroadcastIntent.sendBroadcast({
+              action: intentAction,
+              extras: {
+                'source': 'signal_scribe',
+                'action_type': 'screen_off'
+              }
+            });
+            
+            if (result.success) {
+              console.log('📱 Broadcast intent sent successfully:', intentAction);
+            } else {
+              throw new Error('Failed to send broadcast intent');
+            }
+          } catch (broadcastError) {
+            console.error('📱 Error sending broadcast intent:', broadcastError);
+            
+            // Fallback to URL scheme
+            console.log('📱 Fallback: Attempting URL scheme approach');
+            window.location.href = 'tasker://screenoff';
+            console.log('📱 URL scheme sent as fallback');
+          }
         } else {
           console.log('📱 Not Android platform');
         }
